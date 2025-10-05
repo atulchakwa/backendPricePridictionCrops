@@ -110,21 +110,20 @@ const getPredictedPrice = async (req, res) => {
     // Validate request body
     const validatedData = predictionSchema.parse(req.body);
     
-    // TODO: Integrate with ML model
-    // For now, return mock prediction
-    const mockPrediction = {
+    // Use Hugging Face service for prediction
+    const huggingFaceService = require('../services/huggingFaceService');
+    
+    const predictionData = {
       cropName: validatedData.cropName,
-      location: validatedData.location,
-      predictedDate: validatedData.date,
-      predictedPrice: Math.random() * 1000, // Random price between 0 and 1000
-      unit: 'kg',
-      confidence: Math.random() * 0.5 + 0.5 // Random confidence between 0.5 and 1.0
+      state: validatedData.state || 'Punjab',
+      city: validatedData.location,
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
     };
     
-    res.json({
-      success: true,
-      data: mockPrediction
-    });
+    const predictionResult = await huggingFaceService.getCropPricePrediction(predictionData);
+    
+    res.json(predictionResult);
   } catch (error) {
     if (error.name === 'ZodError') {
       return res.status(400).json({
@@ -134,6 +133,7 @@ const getPredictedPrice = async (req, res) => {
       });
     }
     
+    console.error('Error getting prediction:', error);
     res.status(500).json({
       success: false,
       error: 'Error getting prediction'

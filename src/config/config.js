@@ -75,7 +75,15 @@ const config = {
 
   // Additional configuration
   agmarknetApiUrl: process.env.AGMARKNET_API_URL || 'https://api.agmarknet.gov.in/api',
-  agmarknetApiKey: process.env.AGMARKNET_API_KEY || 'your-agmarknet-api-key'
+  agmarknetApiKey: process.env.AGMARKNET_API_KEY || 'your-agmarknet-api-key',
+  
+  // Hugging Face configuration
+  huggingFace: {
+    apiKey: process.env.HUGGINGFACE_API_KEY,
+    spaceUrl: process.env.HUGGINGFACE_SPACE_URL || 'https://rajkhanke007-crop-price-prediction.hf.space',
+    modelUrl: process.env.HUGGINGFACE_MODEL_URL || 'https://api-inference.huggingface.co/models',
+    timeout: parseInt(process.env.HUGGINGFACE_TIMEOUT || '30000', 10)
+  }
 };
 
 module.exports = { config, getAvailablePort };

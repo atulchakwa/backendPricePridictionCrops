@@ -5,6 +5,13 @@ const { predictionSchema } = require('../utils/validationSchemas'); // Make sure
 const validate = require('../middleware/validate');
 const { auth } = require('../middleware/auth'); // Destructure the auth function here
 
+// Public test route (for testing Hugging Face integration)
+router.post(
+  '/test',
+  validate(predictionSchema), // This middleware will validate req.body against predictionSchema
+  getPrediction // This is your final route handler
+);
+
 // Protected route
 router.post(
   '/',
